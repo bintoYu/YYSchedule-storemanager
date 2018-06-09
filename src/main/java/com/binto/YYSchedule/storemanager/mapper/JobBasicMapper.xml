@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binto.YYSchedule.storemanager.mapper.JobBasicMapper">
+  <resultMap id="BaseResultMap" type="com.binto.YYSchedule.common.mybatis.pojo.JobBasic">
+    <id column="job_id" jdbcType="INTEGER" property="jobId" />
+    <result column="job_distribution_mode" jdbcType="VARCHAR" property="jobDistributionMode" />
+    <result column="task_phase" jdbcType="CHAR" property="taskPhase" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    job_id, job_distribution_mode, task_phase
+  </sql>
+  <select id="selectByExample" parameterType="com.binto.YYSchedule.common.mybatis.pojo.JobBasicExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from job_basic
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from job_basic
+    where job_id = #{jobId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from job_basic
+    where job_id = #{jobId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.binto.YYSchedule.common.mybatis.pojo.JobBasicExample">
+    delete from job_basic
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.binto.YYSchedule.common.mybatis.pojo.JobBasic">
+    insert into job_basic (job_id, job_distribution_mode, task_phase
+      )
+    values (#{jobId,jdbcType=INTEGER}, #{jobDistributionMode,jdbcType=VARCHAR}, #{taskPhase,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.binto.YYSchedule.common.mybatis.pojo.JobBasic">
+    insert into job_basic
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="jobId != null">
+        job_id,
+      </if>
+      <if test="jobDistributionMode != null">
+        job_distribution_mode,
+      </if>
+      <if test="taskPhase != null">
+        task_phase,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="jobId != null">
+        #{jobId,jdbcType=INTEGER},
+      </if>
+      <if test="jobDistributionMode != null">
+        #{jobDistributionMode,jdbcType=VARCHAR},
+      </if>
+      <if test="taskPhase != null">
+        #{taskPhase,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.binto.YYSchedule.common.mybatis.pojo.JobBasicExample" resultType="java.lang.Integer">
+    select count(*) from job_basic
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update job_basic
+    <set>
+      <if test="record.jobId != null">
+        job_id = #{record.jobId,jdbcType=INTEGER},
+      </if>
+      <if test="record.jobDistributionMode != null">
+        job_distribution_mode = #{record.jobDistributionMode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskPhase != null">
+        task_phase = #{record.taskPhase,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update job_basic
+    set job_id = #{record.jobId,jdbcType=INTEGER},
+      job_distribution_mode = #{record.jobDistributionMode,jdbcType=VARCHAR},
+      task_phase = #{record.taskPhase,jdbcType=CHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.binto.YYSchedule.common.mybatis.pojo.JobBasic">
+    update job_basic
+    <set>
+      <if test="jobDistributionMode != null">
+        job_distribution_mode = #{jobDistributionMode,jdbcType=VARCHAR},
+      </if>
+      <if test="taskPhase != null">
+        task_phase = #{taskPhase,jdbcType=CHAR},
+      </if>
+    </set>
+    where job_id = #{jobId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.binto.YYSchedule.common.mybatis.pojo.JobBasic">
+    update job_basic
+    set job_distribution_mode = #{jobDistributionMode,jdbcType=VARCHAR},
+      task_phase = #{taskPhase,jdbcType=CHAR}
+    where job_id = #{jobId,jdbcType=INTEGER}
+  </update>
+  <resultMap id="BaseResultMap" type="com.binto.YYSchedule.common.mybatis.pojo.JobBasic">
+    <id column="job_id" jdbcType="INTEGER" property="jobId" />
+    <result column="job_distribution_mode" jdbcType="VARCHAR" property="jobDistributionMode" />
+    <result column="task_phase" jdbcType="CHAR" property="taskPhase" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    job_id, job_distribution_mode, task_phase
+  </sql>
+  <select id="selectByExample" parameterType="com.binto.YYSchedule.common.mybatis.pojo.JobBasicExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from job_basic
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from job_basic
+    where job_id = #{jobId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from job_basic
+    where job_id = #{jobId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.binto.YYSchedule.common.mybatis.pojo.JobBasicExample">
+    delete from job_basic
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.binto.YYSchedule.common.mybatis.pojo.JobBasic">
+    insert into job_basic (job_id, job_distribution_mode, task_phase
+      )
+    values (#{jobId,jdbcType=INTEGER}, #{jobDistributionMode,jdbcType=VARCHAR}, #{taskPhase,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.binto.YYSchedule.common.mybatis.pojo.JobBasic">
+    insert into job_basic
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="jobId != null">
+        job_id,
+      </if>
+      <if test="jobDistributionMode != null">
+        job_distribution_mode,
+      </if>
+      <if test="taskPhase != null">
+        task_phase,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="jobId != null">
+        #{jobId,jdbcType=INTEGER},
+      </if>
+      <if test="jobDistributionMode != null">
+        #{jobDistributionMode,jdbcType=VARCHAR},
+      </if>
+      <if test="taskPhase != null">
+        #{taskPhase,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.binto.YYSchedule.common.mybatis.pojo.JobBasicExample" resultType="java.lang.Integer">
+    select count(*) from job_basic
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update job_basic
+    <set>
+      <if test="record.jobId != null">
+        job_id = #{record.jobId,jdbcType=INTEGER},
+      </if>
+      <if test="record.jobDistributionMode != null">
+        job_distribution_mode = #{record.jobDistributionMode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskPhase != null">
+        task_phase = #{record.taskPhase,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update job_basic
+    set job_id = #{record.jobId,jdbcType=INTEGER},
+      job_distribution_mode = #{record.jobDistributionMode,jdbcType=VARCHAR},
+      task_phase = #{record.taskPhase,jdbcType=CHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.binto.YYSchedule.common.mybatis.pojo.JobBasic">
+    update job_basic
+    <set>
+      <if test="jobDistributionMode != null">
+        job_distribution_mode = #{jobDistributionMode,jdbcType=VARCHAR},
+      </if>
+      <if test="taskPhase != null">
+        task_phase = #{taskPhase,jdbcType=CHAR},
+      </if>
+    </set>
+    where job_id = #{jobId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.binto.YYSchedule.common.mybatis.pojo.JobBasic">
+    update job_basic
+    set job_distribution_mode = #{jobDistributionMode,jdbcType=VARCHAR},
+      task_phase = #{taskPhase,jdbcType=CHAR}
+    where job_id = #{jobId,jdbcType=INTEGER}
+  </update>
+  <resultMap id="BaseResultMap" type="com.binto.YYSchedule.common.pojo.JobBasic">
+    <id column="job_id" jdbcType="INTEGER" property="jobId" />
+    <result column="job_distribution_mode" jdbcType="VARCHAR" property="jobDistributionMode" />
+    <result column="task_phase" jdbcType="CHAR" property="taskPhase" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    job_id, job_distribution_mode, task_phase
+  </sql>
+  <select id="selectByExample" parameterType="com.binto.YYSchedule.common.pojo.JobBasicExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from job_basic
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from job_basic
+    where job_id = #{jobId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from job_basic
+    where job_id = #{jobId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.binto.YYSchedule.common.pojo.JobBasicExample">
+    delete from job_basic
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.binto.YYSchedule.common.pojo.JobBasic">
+    insert into job_basic (job_id, job_distribution_mode, task_phase
+      )
+    values (#{jobId,jdbcType=INTEGER}, #{jobDistributionMode,jdbcType=VARCHAR}, #{taskPhase,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.binto.YYSchedule.common.pojo.JobBasic">
+    insert into job_basic
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="jobId != null">
+        job_id,
+      </if>
+      <if test="jobDistributionMode != null">
+        job_distribution_mode,
+      </if>
+      <if test="taskPhase != null">
+        task_phase,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="jobId != null">
+        #{jobId,jdbcType=INTEGER},
+      </if>
+      <if test="jobDistributionMode != null">
+        #{jobDistributionMode,jdbcType=VARCHAR},
+      </if>
+      <if test="taskPhase != null">
+        #{taskPhase,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.binto.YYSchedule.common.pojo.JobBasicExample" resultType="java.lang.Integer">
+    select count(*) from job_basic
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update job_basic
+    <set>
+      <if test="record.jobId != null">
+        job_id = #{record.jobId,jdbcType=INTEGER},
+      </if>
+      <if test="record.jobDistributionMode != null">
+        job_distribution_mode = #{record.jobDistributionMode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskPhase != null">
+        task_phase = #{record.taskPhase,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update job_basic
+    set job_id = #{record.jobId,jdbcType=INTEGER},
+      job_distribution_mode = #{record.jobDistributionMode,jdbcType=VARCHAR},
+      task_phase = #{record.taskPhase,jdbcType=CHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.binto.YYSchedule.common.pojo.JobBasic">
+    update job_basic
+    <set>
+      <if test="jobDistributionMode != null">
+        job_distribution_mode = #{jobDistributionMode,jdbcType=VARCHAR},
+      </if>
+      <if test="taskPhase != null">
+        task_phase = #{taskPhase,jdbcType=CHAR},
+      </if>
+    </set>
+    where job_id = #{jobId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.binto.YYSchedule.common.pojo.JobBasic">
+    update job_basic
+    set job_distribution_mode = #{jobDistributionMode,jdbcType=VARCHAR},
+      task_phase = #{taskPhase,jdbcType=CHAR}
+    where job_id = #{jobId,jdbcType=INTEGER}
+  </update>
+</mapper>
