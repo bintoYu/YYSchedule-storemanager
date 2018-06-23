@@ -40,16 +40,15 @@
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
 		</dependency>
-		<!-- 依赖taotao-manager-pojo -->
+		<!-- ftp -->
 		<dependency>
-			<groupId>com.taotao</groupId>
-			<artifactId>taotao-manager-pojo</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
 		</dependency>
+		<!-- file -->
 		<dependency>
-			<groupId>com.taotao</groupId>
-			<artifactId>taotao-manager-mapper</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-io</artifactId>
 		</dependency>
 		<!-- Spring -->
 		<dependency>

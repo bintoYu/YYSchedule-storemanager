@@ -1,6 +1,6 @@
-package com.binto.YYSchedule.storemanager.service;
+package com.YYSchedule.store.service;
 
-import com.binto.YYSchedule.common.mybatis.pojo.UserBasic;
+import com.YYSchedule.common.mybatis.pojo.UserBasic;
 
 /**
  * @author yubingtao
@@ -9,4 +9,6 @@ import com.binto.YYSchedule.common.mybatis.pojo.UserBasic;
  */
 public interface UserBasicService {
     UserBasic getUserBasicMapperById(Integer userId);
+    
+    int updateUserBasic(UserBasic userBasic);
 }

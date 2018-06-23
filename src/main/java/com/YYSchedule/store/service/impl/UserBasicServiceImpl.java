@@ -1,4 +1,4 @@
-package com.binto.YYSchedule.storemanager.service.impl;
+package com.YYSchedule.store.service.impl;
 
 import java.util.List;
 
@@ -6,10 +6,10 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.binto.YYSchedule.common.mybatis.pojo.UserBasic;
-import com.binto.YYSchedule.common.mybatis.pojo.UserBasicExample;
-import com.binto.YYSchedule.storemanager.mapper.UserBasicMapper;
-import com.binto.YYSchedule.storemanager.service.UserBasicService;
+import com.YYSchedule.common.mybatis.pojo.UserBasic;
+import com.YYSchedule.common.mybatis.pojo.UserBasicExample;
+import com.YYSchedule.store.mapper.UserBasicMapper;
+import com.YYSchedule.store.service.UserBasicService;
 
 /**
  * @author yubingtao
@@ -20,13 +20,13 @@ import com.binto.YYSchedule.storemanager.service.UserBasicService;
 @Service
 public class UserBasicServiceImpl implements UserBasicService {
     @Resource
-    UserBasicMapper userBasicMapper;
+    private UserBasicMapper userBasicMapper;
 
     @Override
     public UserBasic getUserBasicMapperById(Integer userId) {
         UserBasicExample userBasicExample = new UserBasicExample();
         UserBasicExample.Criteria criteria = userBasicExample.createCriteria();
-        criteria.andUserIdEqualTo(1);
+        criteria.andUserIdEqualTo(userId);
 
         List<UserBasic> userBasicList = userBasicMapper.selectByExample(userBasicExample);
         UserBasic userBasic = null;
@@ -36,4 +36,10 @@ public class UserBasicServiceImpl implements UserBasicService {
         }
         return userBasic;
     }
+
+	@Override
+	public int updateUserBasic(UserBasic userBasic)
+	{
+		return userBasicMapper.updateByPrimaryKeySelective(userBasic);
+	}
 }
