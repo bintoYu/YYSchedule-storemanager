@@ -10,7 +10,7 @@ public interface TaskFileMapper {
 
     int deleteByExample(TaskFileExample example);
 
-    int deleteByPrimaryKey(Integer taskId);
+    int deleteByPrimaryKey(Long taskId);
 
     int insert(TaskFile record);
 
@@ -18,7 +18,7 @@ public interface TaskFileMapper {
 
     List<TaskFile> selectByExample(TaskFileExample example);
 
-    TaskFile selectByPrimaryKey(Integer taskId);
+    TaskFile selectByPrimaryKey(Long taskId);
 
     int updateByExampleSelective(@Param("record") TaskFile record, @Param("example") TaskFileExample example);
 

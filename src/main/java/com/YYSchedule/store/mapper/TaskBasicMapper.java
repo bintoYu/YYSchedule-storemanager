@@ -10,7 +10,7 @@ public interface TaskBasicMapper {
 
     int deleteByExample(TaskBasicExample example);
 
-    int deleteByPrimaryKey(Integer taskId);
+    int deleteByPrimaryKey(Long taskId);
 
     int insert(TaskBasic record);
 
@@ -18,7 +18,7 @@ public interface TaskBasicMapper {
 
     List<TaskBasic> selectByExample(TaskBasicExample example);
 
-    TaskBasic selectByPrimaryKey(Integer taskId);
+    TaskBasic selectByPrimaryKey(Long taskId);
 
     int updateByExampleSelective(@Param("record") TaskBasic record, @Param("example") TaskBasicExample example);
 

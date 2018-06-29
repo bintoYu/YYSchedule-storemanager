@@ -2,8 +2,7 @@ package com.YYSchedule.store.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.YYSchedule.common.mybatis.pojo.UserBasic;
@@ -19,7 +18,7 @@ import com.YYSchedule.store.service.UserBasicService;
 
 @Service
 public class UserBasicServiceImpl implements UserBasicService {
-    @Resource
+    @Autowired
     private UserBasicMapper userBasicMapper;
 
     @Override

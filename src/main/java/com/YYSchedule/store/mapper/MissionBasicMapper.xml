@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.YYSchedule.common.mybatis.pojo.MissionBasic" >
     <id column="mission_id" property="missionId" jdbcType="INTEGER" />
     <result column="mission_name" property="missionName" jdbcType="VARCHAR" />
-    <result column="mission_start_time" property="missionStartTime" jdbcType="DATE" />
+    <result column="mission_start_time" property="missionStartTime" jdbcType="BIGINT" />
     <result column="job_count" property="jobCount" jdbcType="INTEGER" />
     <result column="user_id" property="userId" jdbcType="INTEGER" />
   </resultMap>
@@ -102,7 +102,7 @@
   <insert id="insert" parameterType="com.YYSchedule.common.mybatis.pojo.MissionBasic" >
     insert into mission_basic (mission_id, mission_name, mission_start_time, 
       job_count, user_id)
-    values (#{missionId,jdbcType=INTEGER}, #{missionName,jdbcType=VARCHAR}, #{missionStartTime,jdbcType=DATE}, 
+    values (#{missionId,jdbcType=INTEGER}, #{missionName,jdbcType=VARCHAR}, #{missionStartTime,jdbcType=BIGINT}, 
       #{jobCount,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.YYSchedule.common.mybatis.pojo.MissionBasic" >
@@ -132,7 +132,7 @@
         #{missionName,jdbcType=VARCHAR},
       </if>
       <if test="missionStartTime != null" >
-        #{missionStartTime,jdbcType=DATE},
+        #{missionStartTime,jdbcType=BIGINT},
       </if>
       <if test="jobCount != null" >
         #{jobCount,jdbcType=INTEGER},
@@ -158,7 +158,7 @@
         mission_name = #{record.missionName,jdbcType=VARCHAR},
       </if>
       <if test="record.missionStartTime != null" >
-        mission_start_time = #{record.missionStartTime,jdbcType=DATE},
+        mission_start_time = #{record.missionStartTime,jdbcType=BIGINT},
       </if>
       <if test="record.jobCount != null" >
         job_count = #{record.jobCount,jdbcType=INTEGER},
@@ -175,7 +175,7 @@
     update mission_basic
     set mission_id = #{record.missionId,jdbcType=INTEGER},
       mission_name = #{record.missionName,jdbcType=VARCHAR},
-      mission_start_time = #{record.missionStartTime,jdbcType=DATE},
+      mission_start_time = #{record.missionStartTime,jdbcType=BIGINT},
       job_count = #{record.jobCount,jdbcType=INTEGER},
       user_id = #{record.userId,jdbcType=INTEGER}
     <if test="_parameter != null" >
@@ -189,7 +189,7 @@
         mission_name = #{missionName,jdbcType=VARCHAR},
       </if>
       <if test="missionStartTime != null" >
-        mission_start_time = #{missionStartTime,jdbcType=DATE},
+        mission_start_time = #{missionStartTime,jdbcType=BIGINT},
       </if>
       <if test="jobCount != null" >
         job_count = #{jobCount,jdbcType=INTEGER},
@@ -203,7 +203,7 @@
   <update id="updateByPrimaryKey" parameterType="com.YYSchedule.common.mybatis.pojo.MissionBasic" >
     update mission_basic
     set mission_name = #{missionName,jdbcType=VARCHAR},
-      mission_start_time = #{missionStartTime,jdbcType=DATE},
+      mission_start_time = #{missionStartTime,jdbcType=BIGINT},
       job_count = #{jobCount,jdbcType=INTEGER},
       user_id = #{userId,jdbcType=INTEGER}
     where mission_id = #{missionId,jdbcType=INTEGER}

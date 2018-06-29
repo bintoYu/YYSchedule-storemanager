@@ -10,7 +10,7 @@ public interface JobStatusMapper {
 
     int deleteByExample(JobStatusExample example);
 
-    int deleteByPrimaryKey(Integer jobId);
+    int deleteByPrimaryKey(Long jobId);
 
     int insert(JobStatus record);
 
@@ -18,7 +18,7 @@ public interface JobStatusMapper {
 
     List<JobStatus> selectByExample(JobStatusExample example);
 
-    JobStatus selectByPrimaryKey(Integer jobId);
+    JobStatus selectByPrimaryKey(Long jobId);
 
     int updateByExampleSelective(@Param("record") JobStatus record, @Param("example") JobStatusExample example);
 

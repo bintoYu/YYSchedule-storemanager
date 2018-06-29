@@ -10,7 +10,7 @@ public interface TaskTimestampMapper {
 
     int deleteByExample(TaskTimestampExample example);
 
-    int deleteByPrimaryKey(Integer taskId);
+    int deleteByPrimaryKey(Long taskId);
 
     int insert(TaskTimestamp record);
 
@@ -18,7 +18,7 @@ public interface TaskTimestampMapper {
 
     List<TaskTimestamp> selectByExample(TaskTimestampExample example);
 
-    TaskTimestamp selectByPrimaryKey(Integer taskId);
+    TaskTimestamp selectByPrimaryKey(Long taskId);
 
     int updateByExampleSelective(@Param("record") TaskTimestamp record, @Param("example") TaskTimestampExample example);
 
