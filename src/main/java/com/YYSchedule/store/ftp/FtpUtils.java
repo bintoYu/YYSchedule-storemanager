@@ -21,6 +21,7 @@ public class FtpUtils {
 	
 	/**
 	 * validate ftp path
+	 * if directory doesn't exist,create it
 	 * @param dirPath
 	 * @return dirPath
 	 * @throws FtpException
@@ -31,7 +32,7 @@ public class FtpUtils {
 		
 		String[] dirArray = PathUtils.formatPath4FTP(dirPath).split("/");
 		for (String dirName : dirArray) {
-			if (dirName != null && dirName.length() > 0) {
+			if (dirName != null && dirName.length() != 0) {
 				if (dirExists) {
 					try {
 						dirExists = ftpClient.changeWorkingDirectory(dirName);
@@ -195,7 +196,7 @@ public class FtpUtils {
 	@SuppressWarnings("unused")
 	private static boolean isExist(FTPClient ftpClient, String filePath) throws FtpException {
 		boolean isExist = false;
-		if (filePath != null && filePath.length() > 0) {
+		if (filePath == null || filePath.length() == 0) {
 			return isExist;
 		} else {
 			String fileDir = filePath.substring(0, filePath.lastIndexOf("/"));

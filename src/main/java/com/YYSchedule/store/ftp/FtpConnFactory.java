@@ -90,7 +90,7 @@ public class FtpConnFactory {
      * @throws FtpException
      */
 	public void parse(String resultAddress) throws FtpException {
-		if (resultAddress !=null && resultAddress.length() > 0) {
+		if (resultAddress.length() == 0 || resultAddress ==null  ) {
 			throw new FtpException("Address must not be null or empty.");
 		}
 		
