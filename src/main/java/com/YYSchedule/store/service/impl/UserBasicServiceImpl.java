@@ -21,8 +21,14 @@ public class UserBasicServiceImpl implements UserBasicService {
     @Autowired
     private UserBasicMapper userBasicMapper;
 
+	@Override
+	public List<UserBasic> getUserBasicList()
+	{
+		return userBasicMapper.selectByExample(null);
+	}
+    
     @Override
-    public UserBasic getUserBasicMapperById(Integer userId) {
+    public UserBasic getUserBasicById(Integer userId) {
         UserBasicExample userBasicExample = new UserBasicExample();
         UserBasicExample.Criteria criteria = userBasicExample.createCriteria();
         criteria.andUserIdEqualTo(userId);
@@ -41,4 +47,5 @@ public class UserBasicServiceImpl implements UserBasicService {
 	{
 		return userBasicMapper.updateByPrimaryKeySelective(userBasic);
 	}
+
 }

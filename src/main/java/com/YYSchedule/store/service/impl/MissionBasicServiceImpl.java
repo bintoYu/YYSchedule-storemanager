@@ -21,7 +21,13 @@ public class MissionBasicServiceImpl implements MissionBasicService
     private MissionBasicMapper missionBasicMapper;
     
 	@Override
-	public MissionBasic getMissionBasicMapperById(Integer missionId)
+	public List<MissionBasic> getMissionBasicList()
+	{
+		return missionBasicMapper.selectByExample(null);
+	}
+    
+	@Override
+	public MissionBasic getMissionBasicById(Integer missionId)
 	{
         MissionBasicExample missionBasicExample = new MissionBasicExample();
         MissionBasicExample.Criteria criteria = missionBasicExample.createCriteria();
@@ -47,5 +53,7 @@ public class MissionBasicServiceImpl implements MissionBasicService
 	{
 		return missionBasicMapper.insertSelective(missionBasic);
 	}
+
+
 	
 }

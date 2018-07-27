@@ -1,5 +1,7 @@
 package com.YYSchedule.store.service;
 
+import java.util.List;
+
 import com.YYSchedule.common.mybatis.pojo.UserBasic;
 
 /**
@@ -8,7 +10,9 @@ import com.YYSchedule.common.mybatis.pojo.UserBasic;
  * @date 2018-6-4
  */
 public interface UserBasicService {
-    UserBasic getUserBasicMapperById(Integer userId);
+	List<UserBasic> getUserBasicList();
+	
+    UserBasic getUserBasicById(Integer userId);
     
     int updateUserBasic(UserBasic userBasic);
 }
