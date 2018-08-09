@@ -3,7 +3,7 @@ package com.YYSchedule.store.service;
 import com.YYSchedule.common.mybatis.pojo.JobStatus;
 
 /**
- * @author yubingtao
+ * @author ybt
  * @version 1.0
  * @date 2018-6-25
  */

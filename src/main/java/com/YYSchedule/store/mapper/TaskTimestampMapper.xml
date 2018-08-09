@@ -3,9 +3,8 @@
 <mapper namespace="com.YYSchedule.store.mapper.TaskTimestampMapper" >
   <resultMap id="BaseResultMap" type="com.YYSchedule.common.mybatis.pojo.TaskTimestamp" >
     <id column="task_id" property="taskId" jdbcType="BIGINT" />
-    <result column="task_phase" property="taskPhase" jdbcType="CHAR" />
     <result column="loaded_time" property="loadedTime" jdbcType="BIGINT" />
-    <result column="issued_time" property="issuedTime" jdbcType="BIGINT" />
+    <result column="distributed_time" property="distributedTime" jdbcType="BIGINT" />
     <result column="started_time" property="startedTime" jdbcType="BIGINT" />
     <result column="finished_time" property="finishedTime" jdbcType="BIGINT" />
   </resultMap>
@@ -68,7 +67,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    task_id, task_phase, loaded_time, issued_time, started_time, finished_time
+    task_id, loaded_time, distributed_time, started_time, finished_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.YYSchedule.common.mybatis.pojo.TaskTimestampExample" >
     select
@@ -101,12 +100,10 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.YYSchedule.common.mybatis.pojo.TaskTimestamp" >
-    insert into task_timestamp (task_id, task_phase, loaded_time, 
-      issued_time, started_time, finished_time
-      )
-    values (#{taskId,jdbcType=BIGINT}, #{taskPhase,jdbcType=CHAR}, #{loadedTime,jdbcType=BIGINT}, 
-      #{issuedTime,jdbcType=BIGINT}, #{startedTime,jdbcType=BIGINT}, #{finishedTime,jdbcType=BIGINT}
-      )
+    insert into task_timestamp (task_id, loaded_time, distributed_time, 
+      started_time, finished_time)
+    values (#{taskId,jdbcType=BIGINT}, #{loadedTime,jdbcType=BIGINT}, #{distributedTime,jdbcType=BIGINT}, 
+      #{startedTime,jdbcType=BIGINT}, #{finishedTime,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.YYSchedule.common.mybatis.pojo.TaskTimestamp" >
     insert into task_timestamp
@@ -114,14 +111,11 @@
       <if test="taskId != null" >
         task_id,
       </if>
-      <if test="taskPhase != null" >
-        task_phase,
-      </if>
       <if test="loadedTime != null" >
         loaded_time,
       </if>
-      <if test="issuedTime != null" >
-        issued_time,
+      <if test="distributedTime != null" >
+        distributed_time,
       </if>
       <if test="startedTime != null" >
         started_time,
@@ -134,14 +128,11 @@
       <if test="taskId != null" >
         #{taskId,jdbcType=BIGINT},
       </if>
-      <if test="taskPhase != null" >
-        #{taskPhase,jdbcType=CHAR},
-      </if>
       <if test="loadedTime != null" >
         #{loadedTime,jdbcType=BIGINT},
       </if>
-      <if test="issuedTime != null" >
-        #{issuedTime,jdbcType=BIGINT},
+      <if test="distributedTime != null" >
+        #{distributedTime,jdbcType=BIGINT},
       </if>
       <if test="startedTime != null" >
         #{startedTime,jdbcType=BIGINT},
@@ -163,14 +154,11 @@
       <if test="record.taskId != null" >
         task_id = #{record.taskId,jdbcType=BIGINT},
       </if>
-      <if test="record.taskPhase != null" >
-        task_phase = #{record.taskPhase,jdbcType=CHAR},
-      </if>
       <if test="record.loadedTime != null" >
         loaded_time = #{record.loadedTime,jdbcType=BIGINT},
       </if>
-      <if test="record.issuedTime != null" >
-        issued_time = #{record.issuedTime,jdbcType=BIGINT},
+      <if test="record.distributedTime != null" >
+        distributed_time = #{record.distributedTime,jdbcType=BIGINT},
       </if>
       <if test="record.startedTime != null" >
         started_time = #{record.startedTime,jdbcType=BIGINT},
@@ -186,9 +174,8 @@
   <update id="updateByExample" parameterType="map" >
     update task_timestamp
     set task_id = #{record.taskId,jdbcType=BIGINT},
-      task_phase = #{record.taskPhase,jdbcType=CHAR},
       loaded_time = #{record.loadedTime,jdbcType=BIGINT},
-      issued_time = #{record.issuedTime,jdbcType=BIGINT},
+      distributed_time = #{record.distributedTime,jdbcType=BIGINT},
       started_time = #{record.startedTime,jdbcType=BIGINT},
       finished_time = #{record.finishedTime,jdbcType=BIGINT}
     <if test="_parameter != null" >
@@ -198,14 +185,11 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.YYSchedule.common.mybatis.pojo.TaskTimestamp" >
     update task_timestamp
     <set >
-      <if test="taskPhase != null" >
-        task_phase = #{taskPhase,jdbcType=CHAR},
-      </if>
       <if test="loadedTime != null" >
         loaded_time = #{loadedTime,jdbcType=BIGINT},
       </if>
-      <if test="issuedTime != null" >
-        issued_time = #{issuedTime,jdbcType=BIGINT},
+      <if test="distributedTime != null" >
+        distributed_time = #{distributedTime,jdbcType=BIGINT},
       </if>
       <if test="startedTime != null" >
         started_time = #{startedTime,jdbcType=BIGINT},
@@ -218,9 +202,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.YYSchedule.common.mybatis.pojo.TaskTimestamp" >
     update task_timestamp
-    set task_phase = #{taskPhase,jdbcType=CHAR},
-      loaded_time = #{loadedTime,jdbcType=BIGINT},
-      issued_time = #{issuedTime,jdbcType=BIGINT},
+    set loaded_time = #{loadedTime,jdbcType=BIGINT},
+      distributed_time = #{distributedTime,jdbcType=BIGINT},
       started_time = #{startedTime,jdbcType=BIGINT},
       finished_time = #{finishedTime,jdbcType=BIGINT}
     where task_id = #{taskId,jdbcType=BIGINT}

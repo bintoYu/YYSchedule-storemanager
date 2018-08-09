@@ -5,7 +5,7 @@ import java.util.List;
 import com.YYSchedule.common.mybatis.pojo.MissionBasic;
 
 /**
- * @author yubingtao
+ * @author ybt
  * @version 1.0
  * @date 2018-6-19
  */

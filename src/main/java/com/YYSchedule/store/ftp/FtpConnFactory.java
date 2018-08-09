@@ -19,7 +19,7 @@ import com.YYSchedule.store.exception.FtpException;
 @Component
 public class FtpConnFactory {
 	
-	@Value("#{config['ftp_server_urls']}")
+	@Value("#{config.ftp_server_urls}")
 	private String ftpHost;
 
 	private String domain;
@@ -122,6 +122,11 @@ public class FtpConnFactory {
 		}
 	}
 	
+	public String getFtpHost()
+	{
+		return ftpHost;
+	}
+
 	public String getDomain() {
 		return domain;
 	}

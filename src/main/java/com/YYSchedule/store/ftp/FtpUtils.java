@@ -14,8 +14,8 @@ import java.util.List;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 
+import com.YYSchedule.common.utils.PathUtils;
 import com.YYSchedule.store.exception.FtpException;
-import com.YYSchedule.store.util.PathUtils;
 
 public class FtpUtils
 {

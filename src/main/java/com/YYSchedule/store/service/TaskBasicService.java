@@ -6,7 +6,7 @@ import com.YYSchedule.common.mybatis.pojo.TaskBasic;
 import com.YYSchedule.common.rpc.domain.task.TaskPhase;
 
 /**
- * @author yubingtao
+ * @author ybt
  * @version 1.0
  * @date 2018-6-25
  */

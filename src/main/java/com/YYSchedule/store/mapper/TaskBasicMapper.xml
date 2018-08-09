@@ -6,6 +6,7 @@
     <result column="task_phase" property="taskPhase" jdbcType="CHAR" />
     <result column="task_status" property="taskStatus" jdbcType="CHAR" />
     <result column="loaded_time" property="loadedTime" jdbcType="BIGINT" />
+    <result column="executor_id" property="executorId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -66,7 +67,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    task_id, task_phase, task_status, loaded_time
+    task_id, task_phase, task_status, loaded_time, executor_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.YYSchedule.common.mybatis.pojo.TaskBasicExample" >
     select
@@ -100,9 +101,9 @@
   </delete>
   <insert id="insert" parameterType="com.YYSchedule.common.mybatis.pojo.TaskBasic" >
     insert into task_basic (task_id, task_phase, task_status, 
-      loaded_time)
+      loaded_time, executor_id)
     values (#{taskId,jdbcType=BIGINT}, #{taskPhase,jdbcType=CHAR}, #{taskStatus,jdbcType=CHAR}, 
-      #{loadedTime,jdbcType=BIGINT})
+      #{loadedTime,jdbcType=BIGINT}, #{executorId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.YYSchedule.common.mybatis.pojo.TaskBasic" >
     insert into task_basic
@@ -119,6 +120,9 @@
       <if test="loadedTime != null" >
         loaded_time,
       </if>
+      <if test="executorId != null" >
+        executor_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="taskId != null" >
@@ -132,6 +136,9 @@
       </if>
       <if test="loadedTime != null" >
         #{loadedTime,jdbcType=BIGINT},
+      </if>
+      <if test="executorId != null" >
+        #{executorId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -156,6 +163,9 @@
       <if test="record.loadedTime != null" >
         loaded_time = #{record.loadedTime,jdbcType=BIGINT},
       </if>
+      <if test="record.executorId != null" >
+        executor_id = #{record.executorId,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -166,7 +176,8 @@
     set task_id = #{record.taskId,jdbcType=BIGINT},
       task_phase = #{record.taskPhase,jdbcType=CHAR},
       task_status = #{record.taskStatus,jdbcType=CHAR},
-      loaded_time = #{record.loadedTime,jdbcType=BIGINT}
+      loaded_time = #{record.loadedTime,jdbcType=BIGINT},
+      executor_id = #{record.executorId,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -183,6 +194,9 @@
       <if test="loadedTime != null" >
         loaded_time = #{loadedTime,jdbcType=BIGINT},
       </if>
+      <if test="executorId != null" >
+        executor_id = #{executorId,jdbcType=VARCHAR},
+      </if>
     </set>
     where task_id = #{taskId,jdbcType=BIGINT}
   </update>
@@ -190,7 +204,8 @@
     update task_basic
     set task_phase = #{taskPhase,jdbcType=CHAR},
       task_status = #{taskStatus,jdbcType=CHAR},
-      loaded_time = #{loadedTime,jdbcType=BIGINT}
+      loaded_time = #{loadedTime,jdbcType=BIGINT},
+      executor_id = #{executorId,jdbcType=VARCHAR}
     where task_id = #{taskId,jdbcType=BIGINT}
   </update>
 </mapper>
