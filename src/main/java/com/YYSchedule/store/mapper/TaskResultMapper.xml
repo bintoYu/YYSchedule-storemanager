@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.YYSchedule.store.mapper.TaskBasicMapper" >
-  <resultMap id="BaseResultMap" type="com.YYSchedule.common.mybatis.pojo.TaskBasic" >
+<mapper namespace="com.YYSchedule.store.mapper.TaskResultMapper" >
+  <resultMap id="BaseResultMap" type="com.YYSchedule.common.mybatis.pojo.TaskResult" >
     <id column="task_id" property="taskId" jdbcType="BIGINT" />
-    <result column="task_phase" property="taskPhase" jdbcType="CHAR" />
-    <result column="task_status" property="taskStatus" jdbcType="CHAR" />
-    <result column="loaded_time" property="loadedTime" jdbcType="BIGINT" />
-    <result column="node_id" property="nodeId" jdbcType="VARCHAR" />
+    <result column="file_name" property="fileName" jdbcType="VARCHAR" />
+    <result column="result" property="result" jdbcType="VARCHAR" />
+    <result column="logger" property="logger" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -67,15 +66,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    task_id, task_phase, task_status, loaded_time, node_id
+    task_id, file_name, result, logger
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.YYSchedule.common.mybatis.pojo.TaskBasicExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.YYSchedule.common.mybatis.pojo.TaskResultExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from task_basic
+    from task_result
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -86,85 +85,76 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
-    from task_basic
+    from task_result
     where task_id = #{taskId,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from task_basic
+    delete from task_result
     where task_id = #{taskId,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.YYSchedule.common.mybatis.pojo.TaskBasicExample" >
-    delete from task_basic
+  <delete id="deleteByExample" parameterType="com.YYSchedule.common.mybatis.pojo.TaskResultExample" >
+    delete from task_result
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.YYSchedule.common.mybatis.pojo.TaskBasic" >
-    insert into task_basic (task_id, task_phase, task_status, 
-      loaded_time, node_id)
-    values (#{taskId,jdbcType=BIGINT}, #{taskPhase,jdbcType=CHAR}, #{taskStatus,jdbcType=CHAR}, 
-      #{loadedTime,jdbcType=BIGINT}, #{nodeId,jdbcType=VARCHAR})
+  <insert id="insert" parameterType="com.YYSchedule.common.mybatis.pojo.TaskResult" >
+    insert into task_result (task_id, file_name, result, 
+      logger)
+    values (#{taskId,jdbcType=BIGINT}, #{fileName,jdbcType=VARCHAR}, #{result,jdbcType=VARCHAR}, 
+      #{logger,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.YYSchedule.common.mybatis.pojo.TaskBasic" >
-    insert into task_basic
+  <insert id="insertSelective" parameterType="com.YYSchedule.common.mybatis.pojo.TaskResult" >
+    insert into task_result
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="taskId != null" >
         task_id,
       </if>
-      <if test="taskPhase != null" >
-        task_phase,
+      <if test="fileName != null" >
+        file_name,
       </if>
-      <if test="taskStatus != null" >
-        task_status,
+      <if test="result != null" >
+        result,
       </if>
-      <if test="loadedTime != null" >
-        loaded_time,
-      </if>
-      <if test="nodeId != null" >
-        node_id,
+      <if test="logger != null" >
+        logger,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="taskId != null" >
         #{taskId,jdbcType=BIGINT},
       </if>
-      <if test="taskPhase != null" >
-        #{taskPhase,jdbcType=CHAR},
+      <if test="fileName != null" >
+        #{fileName,jdbcType=VARCHAR},
       </if>
-      <if test="taskStatus != null" >
-        #{taskStatus,jdbcType=CHAR},
+      <if test="result != null" >
+        #{result,jdbcType=VARCHAR},
       </if>
-      <if test="loadedTime != null" >
-        #{loadedTime,jdbcType=BIGINT},
-      </if>
-      <if test="nodeId != null" >
-        #{nodeId,jdbcType=VARCHAR},
+      <if test="logger != null" >
+        #{logger,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.YYSchedule.common.mybatis.pojo.TaskBasicExample" resultType="java.lang.Integer" >
-    select count(*) from task_basic
+  <select id="countByExample" parameterType="com.YYSchedule.common.mybatis.pojo.TaskResultExample" resultType="java.lang.Integer" >
+    select count(*) from task_result
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update task_basic
+    update task_result
     <set >
       <if test="record.taskId != null" >
         task_id = #{record.taskId,jdbcType=BIGINT},
       </if>
-      <if test="record.taskPhase != null" >
-        task_phase = #{record.taskPhase,jdbcType=CHAR},
+      <if test="record.fileName != null" >
+        file_name = #{record.fileName,jdbcType=VARCHAR},
       </if>
-      <if test="record.taskStatus != null" >
-        task_status = #{record.taskStatus,jdbcType=CHAR},
+      <if test="record.result != null" >
+        result = #{record.result,jdbcType=VARCHAR},
       </if>
-      <if test="record.loadedTime != null" >
-        loaded_time = #{record.loadedTime,jdbcType=BIGINT},
-      </if>
-      <if test="record.nodeId != null" >
-        node_id = #{record.nodeId,jdbcType=VARCHAR},
+      <if test="record.logger != null" >
+        logger = #{record.logger,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -172,40 +162,35 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update task_basic
+    update task_result
     set task_id = #{record.taskId,jdbcType=BIGINT},
-      task_phase = #{record.taskPhase,jdbcType=CHAR},
-      task_status = #{record.taskStatus,jdbcType=CHAR},
-      loaded_time = #{record.loadedTime,jdbcType=BIGINT},
-      node_id = #{record.nodeId,jdbcType=VARCHAR}
+      file_name = #{record.fileName,jdbcType=VARCHAR},
+      result = #{record.result,jdbcType=VARCHAR},
+      logger = #{record.logger,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.YYSchedule.common.mybatis.pojo.TaskBasic" >
-    update task_basic
+  <update id="updateByPrimaryKeySelective" parameterType="com.YYSchedule.common.mybatis.pojo.TaskResult" >
+    update task_result
     <set >
-      <if test="taskPhase != null" >
-        task_phase = #{taskPhase,jdbcType=CHAR},
+      <if test="fileName != null" >
+        file_name = #{fileName,jdbcType=VARCHAR},
       </if>
-      <if test="taskStatus != null" >
-        task_status = #{taskStatus,jdbcType=CHAR},
+      <if test="result != null" >
+        result = #{result,jdbcType=VARCHAR},
       </if>
-      <if test="loadedTime != null" >
-        loaded_time = #{loadedTime,jdbcType=BIGINT},
-      </if>
-      <if test="nodeId != null" >
-        node_id = #{nodeId,jdbcType=VARCHAR},
+      <if test="logger != null" >
+        logger = #{logger,jdbcType=VARCHAR},
       </if>
     </set>
     where task_id = #{taskId,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.YYSchedule.common.mybatis.pojo.TaskBasic" >
-    update task_basic
-    set task_phase = #{taskPhase,jdbcType=CHAR},
-      task_status = #{taskStatus,jdbcType=CHAR},
-      loaded_time = #{loadedTime,jdbcType=BIGINT},
-      node_id = #{nodeId,jdbcType=VARCHAR}
+  <update id="updateByPrimaryKey" parameterType="com.YYSchedule.common.mybatis.pojo.TaskResult" >
+    update task_result
+    set file_name = #{fileName,jdbcType=VARCHAR},
+      result = #{result,jdbcType=VARCHAR},
+      logger = #{logger,jdbcType=VARCHAR}
     where task_id = #{taskId,jdbcType=BIGINT}
   </update>
 </mapper>

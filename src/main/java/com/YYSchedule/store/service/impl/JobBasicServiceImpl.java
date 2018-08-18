@@ -26,7 +26,7 @@ public class JobBasicServiceImpl implements JobBasicService
         JobBasicExample jobBasicExample = new JobBasicExample();
         JobBasicExample.Criteria criteria = jobBasicExample.createCriteria();
         criteria.andJobIdEqualTo(jobId);
-
+       
         List<JobBasic> jobBasicList = jobBasicMapper.selectByExample(jobBasicExample);
         JobBasic jobBasic = null;
         if(jobBasicList != null && jobBasicList.size() > 0 )

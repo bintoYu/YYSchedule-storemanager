@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.YYSchedule.store.mapper.NodeMapper" >
+  <resultMap id="BaseResultMap" type="com.YYSchedule.common.mybatis.pojo.Node" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="node_id" property="nodeId" jdbcType="VARCHAR" />
+    <result column="is_broken" property="isBroken" jdbcType="BIT" />
+    <result column="success_num" property="successNum" jdbcType="INTEGER" />
+    <result column="task_num" property="taskNum" jdbcType="INTEGER" />
+    <result column="cpu_use_perc" property="cpuUsePerc" jdbcType="DOUBLE" />
+    <result column="free_mem" property="freeMem" jdbcType="BIGINT" />
+    <result column="jvm_free_mem" property="jvmFreeMem" jdbcType="BIGINT" />
+    <result column="queue_length" property="queueLength" jdbcType="INTEGER" />
+    <result column="thread_num" property="threadNum" jdbcType="INTEGER" />
+    <result column="task_phase" property="taskPhase" jdbcType="CHAR" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, node_id, is_broken, success_num, task_num, cpu_use_perc, free_mem, jvm_free_mem, 
+    queue_length, thread_num, task_phase, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.YYSchedule.common.mybatis.pojo.NodeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from node_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from node_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from node_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.YYSchedule.common.mybatis.pojo.NodeExample" >
+    delete from node_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.YYSchedule.common.mybatis.pojo.Node" >
+    insert into node_info (id, node_id, is_broken, 
+      success_num, task_num, cpu_use_perc, 
+      free_mem, jvm_free_mem, queue_length, 
+      thread_num, task_phase, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{nodeId,jdbcType=VARCHAR}, #{isBroken,jdbcType=BIT}, 
+      #{successNum,jdbcType=INTEGER}, #{taskNum,jdbcType=INTEGER}, #{cpuUsePerc,jdbcType=DOUBLE}, 
+      #{freeMem,jdbcType=BIGINT}, #{jvmFreeMem,jdbcType=BIGINT}, #{queueLength,jdbcType=INTEGER}, 
+      #{threadNum,jdbcType=INTEGER}, #{taskPhase,jdbcType=CHAR}, #{updateTime,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.YYSchedule.common.mybatis.pojo.Node" >
+    insert into node_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="nodeId != null" >
+        node_id,
+      </if>
+      <if test="isBroken != null" >
+        is_broken,
+      </if>
+      <if test="successNum != null" >
+        success_num,
+      </if>
+      <if test="taskNum != null" >
+        task_num,
+      </if>
+      <if test="cpuUsePerc != null" >
+        cpu_use_perc,
+      </if>
+      <if test="freeMem != null" >
+        free_mem,
+      </if>
+      <if test="jvmFreeMem != null" >
+        jvm_free_mem,
+      </if>
+      <if test="queueLength != null" >
+        queue_length,
+      </if>
+      <if test="threadNum != null" >
+        thread_num,
+      </if>
+      <if test="taskPhase != null" >
+        task_phase,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="nodeId != null" >
+        #{nodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="isBroken != null" >
+        #{isBroken,jdbcType=BIT},
+      </if>
+      <if test="successNum != null" >
+        #{successNum,jdbcType=INTEGER},
+      </if>
+      <if test="taskNum != null" >
+        #{taskNum,jdbcType=INTEGER},
+      </if>
+      <if test="cpuUsePerc != null" >
+        #{cpuUsePerc,jdbcType=DOUBLE},
+      </if>
+      <if test="freeMem != null" >
+        #{freeMem,jdbcType=BIGINT},
+      </if>
+      <if test="jvmFreeMem != null" >
+        #{jvmFreeMem,jdbcType=BIGINT},
+      </if>
+      <if test="queueLength != null" >
+        #{queueLength,jdbcType=INTEGER},
+      </if>
+      <if test="threadNum != null" >
+        #{threadNum,jdbcType=INTEGER},
+      </if>
+      <if test="taskPhase != null" >
+        #{taskPhase,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.YYSchedule.common.mybatis.pojo.NodeExample" resultType="java.lang.Integer" >
+    select count(*) from node_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update node_info
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.nodeId != null" >
+        node_id = #{record.nodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isBroken != null" >
+        is_broken = #{record.isBroken,jdbcType=BIT},
+      </if>
+      <if test="record.successNum != null" >
+        success_num = #{record.successNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.taskNum != null" >
+        task_num = #{record.taskNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.cpuUsePerc != null" >
+        cpu_use_perc = #{record.cpuUsePerc,jdbcType=DOUBLE},
+      </if>
+      <if test="record.freeMem != null" >
+        free_mem = #{record.freeMem,jdbcType=BIGINT},
+      </if>
+      <if test="record.jvmFreeMem != null" >
+        jvm_free_mem = #{record.jvmFreeMem,jdbcType=BIGINT},
+      </if>
+      <if test="record.queueLength != null" >
+        queue_length = #{record.queueLength,jdbcType=INTEGER},
+      </if>
+      <if test="record.threadNum != null" >
+        thread_num = #{record.threadNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.taskPhase != null" >
+        task_phase = #{record.taskPhase,jdbcType=CHAR},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update node_info
+    set id = #{record.id,jdbcType=INTEGER},
+      node_id = #{record.nodeId,jdbcType=VARCHAR},
+      is_broken = #{record.isBroken,jdbcType=BIT},
+      success_num = #{record.successNum,jdbcType=INTEGER},
+      task_num = #{record.taskNum,jdbcType=INTEGER},
+      cpu_use_perc = #{record.cpuUsePerc,jdbcType=DOUBLE},
+      free_mem = #{record.freeMem,jdbcType=BIGINT},
+      jvm_free_mem = #{record.jvmFreeMem,jdbcType=BIGINT},
+      queue_length = #{record.queueLength,jdbcType=INTEGER},
+      thread_num = #{record.threadNum,jdbcType=INTEGER},
+      task_phase = #{record.taskPhase,jdbcType=CHAR},
+      update_time = #{record.updateTime,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.YYSchedule.common.mybatis.pojo.Node" >
+    update node_info
+    <set >
+      <if test="nodeId != null" >
+        node_id = #{nodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="isBroken != null" >
+        is_broken = #{isBroken,jdbcType=BIT},
+      </if>
+      <if test="successNum != null" >
+        success_num = #{successNum,jdbcType=INTEGER},
+      </if>
+      <if test="taskNum != null" >
+        task_num = #{taskNum,jdbcType=INTEGER},
+      </if>
+      <if test="cpuUsePerc != null" >
+        cpu_use_perc = #{cpuUsePerc,jdbcType=DOUBLE},
+      </if>
+      <if test="freeMem != null" >
+        free_mem = #{freeMem,jdbcType=BIGINT},
+      </if>
+      <if test="jvmFreeMem != null" >
+        jvm_free_mem = #{jvmFreeMem,jdbcType=BIGINT},
+      </if>
+      <if test="queueLength != null" >
+        queue_length = #{queueLength,jdbcType=INTEGER},
+      </if>
+      <if test="threadNum != null" >
+        thread_num = #{threadNum,jdbcType=INTEGER},
+      </if>
+      <if test="taskPhase != null" >
+        task_phase = #{taskPhase,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.YYSchedule.common.mybatis.pojo.Node" >
+    update node_info
+    set node_id = #{nodeId,jdbcType=VARCHAR},
+      is_broken = #{isBroken,jdbcType=BIT},
+      success_num = #{successNum,jdbcType=INTEGER},
+      task_num = #{taskNum,jdbcType=INTEGER},
+      cpu_use_perc = #{cpuUsePerc,jdbcType=DOUBLE},
+      free_mem = #{freeMem,jdbcType=BIGINT},
+      jvm_free_mem = #{jvmFreeMem,jdbcType=BIGINT},
+      queue_length = #{queueLength,jdbcType=INTEGER},
+      thread_num = #{threadNum,jdbcType=INTEGER},
+      task_phase = #{taskPhase,jdbcType=CHAR},
+      update_time = #{updateTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

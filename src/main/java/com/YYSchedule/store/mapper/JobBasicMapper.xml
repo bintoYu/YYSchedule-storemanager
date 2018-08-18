@@ -5,7 +5,9 @@
     <id column="job_id" property="jobId" jdbcType="BIGINT" />
     <result column="job_priority" property="jobPriority" jdbcType="CHAR" />
     <result column="task_phase" property="taskPhase" jdbcType="CHAR" />
-    <result column="task_count" property="taskCount" jdbcType="INTEGER" />
+    <result column="committed_time" property="committedTime" jdbcType="BIGINT" />
+    <result column="task_num" property="taskNum" jdbcType="INTEGER" />
+    <result column="finish_num" property="finishNum" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -66,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    job_id, job_priority, task_phase, task_count
+    job_id, job_priority, task_phase, committed_time, task_num, finish_num
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.YYSchedule.common.mybatis.pojo.JobBasicExample" >
     select
@@ -100,9 +102,11 @@
   </delete>
   <insert id="insert" parameterType="com.YYSchedule.common.mybatis.pojo.JobBasic" >
     insert into job_basic (job_id, job_priority, task_phase, 
-      task_count)
+      committed_time, task_num, finish_num
+      )
     values (#{jobId,jdbcType=BIGINT}, #{jobPriority,jdbcType=CHAR}, #{taskPhase,jdbcType=CHAR}, 
-      #{taskCount,jdbcType=INTEGER})
+      #{committedTime,jdbcType=BIGINT}, #{taskNum,jdbcType=INTEGER}, #{finishNum,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.YYSchedule.common.mybatis.pojo.JobBasic" >
     insert into job_basic
@@ -116,8 +120,14 @@
       <if test="taskPhase != null" >
         task_phase,
       </if>
-      <if test="taskCount != null" >
-        task_count,
+      <if test="committedTime != null" >
+        committed_time,
+      </if>
+      <if test="taskNum != null" >
+        task_num,
+      </if>
+      <if test="finishNum != null" >
+        finish_num,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -130,8 +140,14 @@
       <if test="taskPhase != null" >
         #{taskPhase,jdbcType=CHAR},
       </if>
-      <if test="taskCount != null" >
-        #{taskCount,jdbcType=INTEGER},
+      <if test="committedTime != null" >
+        #{committedTime,jdbcType=BIGINT},
+      </if>
+      <if test="taskNum != null" >
+        #{taskNum,jdbcType=INTEGER},
+      </if>
+      <if test="finishNum != null" >
+        #{finishNum,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -153,8 +169,14 @@
       <if test="record.taskPhase != null" >
         task_phase = #{record.taskPhase,jdbcType=CHAR},
       </if>
-      <if test="record.taskCount != null" >
-        task_count = #{record.taskCount,jdbcType=INTEGER},
+      <if test="record.committedTime != null" >
+        committed_time = #{record.committedTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.taskNum != null" >
+        task_num = #{record.taskNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.finishNum != null" >
+        finish_num = #{record.finishNum,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -166,7 +188,9 @@
     set job_id = #{record.jobId,jdbcType=BIGINT},
       job_priority = #{record.jobPriority,jdbcType=CHAR},
       task_phase = #{record.taskPhase,jdbcType=CHAR},
-      task_count = #{record.taskCount,jdbcType=INTEGER}
+      committed_time = #{record.committedTime,jdbcType=BIGINT},
+      task_num = #{record.taskNum,jdbcType=INTEGER},
+      finish_num = #{record.finishNum,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -180,8 +204,14 @@
       <if test="taskPhase != null" >
         task_phase = #{taskPhase,jdbcType=CHAR},
       </if>
-      <if test="taskCount != null" >
-        task_count = #{taskCount,jdbcType=INTEGER},
+      <if test="committedTime != null" >
+        committed_time = #{committedTime,jdbcType=BIGINT},
+      </if>
+      <if test="taskNum != null" >
+        task_num = #{taskNum,jdbcType=INTEGER},
+      </if>
+      <if test="finishNum != null" >
+        finish_num = #{finishNum,jdbcType=INTEGER},
       </if>
     </set>
     where job_id = #{jobId,jdbcType=BIGINT}
@@ -190,7 +220,9 @@
     update job_basic
     set job_priority = #{jobPriority,jdbcType=CHAR},
       task_phase = #{taskPhase,jdbcType=CHAR},
-      task_count = #{taskCount,jdbcType=INTEGER}
+      committed_time = #{committedTime,jdbcType=BIGINT},
+      task_num = #{taskNum,jdbcType=INTEGER},
+      finish_num = #{finishNum,jdbcType=INTEGER}
     where job_id = #{jobId,jdbcType=BIGINT}
   </update>
 </mapper>
