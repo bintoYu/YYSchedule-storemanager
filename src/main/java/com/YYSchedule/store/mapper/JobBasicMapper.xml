@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.YYSchedule.common.mybatis.pojo.JobBasic" >
     <id column="job_id" property="jobId" jdbcType="BIGINT" />
     <result column="job_priority" property="jobPriority" jdbcType="CHAR" />
-    <result column="task_phase" property="taskPhase" jdbcType="CHAR" />
+    <result column="task_phase" property="taskPhase" jdbcType="VARCHAR" />
     <result column="committed_time" property="committedTime" jdbcType="BIGINT" />
     <result column="task_num" property="taskNum" jdbcType="INTEGER" />
     <result column="finish_num" property="finishNum" jdbcType="INTEGER" />
@@ -104,7 +104,7 @@
     insert into job_basic (job_id, job_priority, task_phase, 
       committed_time, task_num, finish_num
       )
-    values (#{jobId,jdbcType=BIGINT}, #{jobPriority,jdbcType=CHAR}, #{taskPhase,jdbcType=CHAR}, 
+    values (#{jobId,jdbcType=BIGINT}, #{jobPriority,jdbcType=CHAR}, #{taskPhase,jdbcType=VARCHAR}, 
       #{committedTime,jdbcType=BIGINT}, #{taskNum,jdbcType=INTEGER}, #{finishNum,jdbcType=INTEGER}
       )
   </insert>
@@ -138,7 +138,7 @@
         #{jobPriority,jdbcType=CHAR},
       </if>
       <if test="taskPhase != null" >
-        #{taskPhase,jdbcType=CHAR},
+        #{taskPhase,jdbcType=VARCHAR},
       </if>
       <if test="committedTime != null" >
         #{committedTime,jdbcType=BIGINT},
@@ -167,7 +167,7 @@
         job_priority = #{record.jobPriority,jdbcType=CHAR},
       </if>
       <if test="record.taskPhase != null" >
-        task_phase = #{record.taskPhase,jdbcType=CHAR},
+        task_phase = #{record.taskPhase,jdbcType=VARCHAR},
       </if>
       <if test="record.committedTime != null" >
         committed_time = #{record.committedTime,jdbcType=BIGINT},
@@ -187,7 +187,7 @@
     update job_basic
     set job_id = #{record.jobId,jdbcType=BIGINT},
       job_priority = #{record.jobPriority,jdbcType=CHAR},
-      task_phase = #{record.taskPhase,jdbcType=CHAR},
+      task_phase = #{record.taskPhase,jdbcType=VARCHAR},
       committed_time = #{record.committedTime,jdbcType=BIGINT},
       task_num = #{record.taskNum,jdbcType=INTEGER},
       finish_num = #{record.finishNum,jdbcType=INTEGER}
@@ -202,7 +202,7 @@
         job_priority = #{jobPriority,jdbcType=CHAR},
       </if>
       <if test="taskPhase != null" >
-        task_phase = #{taskPhase,jdbcType=CHAR},
+        task_phase = #{taskPhase,jdbcType=VARCHAR},
       </if>
       <if test="committedTime != null" >
         committed_time = #{committedTime,jdbcType=BIGINT},
@@ -219,7 +219,7 @@
   <update id="updateByPrimaryKey" parameterType="com.YYSchedule.common.mybatis.pojo.JobBasic" >
     update job_basic
     set job_priority = #{jobPriority,jdbcType=CHAR},
-      task_phase = #{taskPhase,jdbcType=CHAR},
+      task_phase = #{taskPhase,jdbcType=VARCHAR},
       committed_time = #{committedTime,jdbcType=BIGINT},
       task_num = #{taskNum,jdbcType=INTEGER},
       finish_num = #{finishNum,jdbcType=INTEGER}

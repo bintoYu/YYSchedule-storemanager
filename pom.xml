@@ -5,7 +5,7 @@
     <artifactId>YYSchedule-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>YYSchedule-storemanager</artifactId>
+  <artifactId>YYSchedule-store</artifactId>
 	<!-- 配置个性依赖 -->
 	<dependencies>
 		<dependency>
@@ -39,6 +39,15 @@
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
+		</dependency>
+		<!-- redis -->
+		<dependency>
+    		<groupId>redis.clients</groupId>
+    		<artifactId>jedis</artifactId>
+		</dependency>
+		<dependency>
+    		<groupId>org.springframework.data</groupId>
+    		<artifactId>spring-data-redis</artifactId>
 		</dependency>
 		<!-- ftp -->
 		<dependency>

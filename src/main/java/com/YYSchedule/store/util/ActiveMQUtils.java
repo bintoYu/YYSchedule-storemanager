@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
+import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.ObjectMessage;
@@ -14,6 +15,8 @@ import javax.jms.QueueBrowser;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
+import org.apache.activemq.command.ActiveMQQueue;
+import org.apache.activemq.command.ActiveMQTempQueue;
 import org.apache.log4j.Logger;
 import org.springframework.jms.core.BrowserCallback;
 import org.springframework.jms.core.JmsTemplate;
@@ -21,6 +24,7 @@ import org.springframework.jms.core.MessageCreator;
 
 import com.YYSchedule.common.pojo.Result;
 import com.YYSchedule.common.pojo.Task;
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * @author ybt
@@ -37,22 +41,22 @@ public class ActiveMQUtils
 	 * 
 	 * @param jmsTemplate
 	 * @param queue
-	 * @param context
+	 * @param task
 	 * @param priority
 	 */
 	public static void sendTask(JmsTemplate jmsTemplate, String queue, final Task task, int priority)
 	{
-		LOGGER.info(Thread.currentThread().getName() + " 向队列" + queue + "发送task[" + task.getTaskId() + "]");
-		
+		LOGGER.info(Thread.currentThread().getName() + " 向队列1" + queue + "发送task[" + task.getTaskId() + "]");
+		Destination destination = new ActiveMQQueue(queue);
 		// 设置队列优先级
 		jmsTemplate.setExplicitQosEnabled(true);
 		jmsTemplate.setPriority(priority);
 		
-		jmsTemplate.send(queue, new MessageCreator()
+		jmsTemplate.send(destination, new MessageCreator()
 		{
-			public ObjectMessage createMessage(Session session) throws JMSException
+			public Message createMessage(Session session) throws JMSException
 			{
-				return session.createObjectMessage(task);
+				return session.createTextMessage(JSONObject.toJSONString(task));
 			}
 		});
 	}
@@ -70,9 +74,9 @@ public class ActiveMQUtils
 		
 		jmsTemplate.send(queue, new MessageCreator()
 		{
-			public ObjectMessage createMessage(Session session) throws JMSException
+			public Message createMessage(Session session) throws JMSException
 			{
-				return session.createObjectMessage(task);
+				return session.createTextMessage(JSONObject.toJSONString(task));
 			}
 		});
 	}
@@ -87,13 +91,19 @@ public class ActiveMQUtils
 	 */
 	public static Task receiveTask(JmsTemplate jmsTemplate, String queue) throws JMSException
 	{
-		Task task;
+		Task task = null;
+		
 		try {
-			ObjectMessage objectMessage = (ObjectMessage) jmsTemplate.receive(queue);
-			task = (Task) objectMessage.getObject();
+			jmsTemplate.setReceiveTimeout(1000*60);
+			TextMessage textMessage = (TextMessage) jmsTemplate.receive(queue);
+			if(textMessage != null)
+			{
+				String taskString = textMessage.getText();
+				task = JSONObject.parseObject(taskString,Task.class);
+			}
 		} catch (JMSException e) {
-			LOGGER.error("从队列" + queue + "中获取Context失败！");
-			throw new JMSException("从队列" + queue + "中获取Context失败！");
+			LOGGER.error("从队列" + queue + "中获取Task失败！");
+			throw new JMSException("从队列" + queue + "中获取Task失败！");
 		}
 		return task;
 	}
@@ -128,13 +138,15 @@ public class ActiveMQUtils
 	 */
 	public static Result receiveResult(JmsTemplate jmsTemplate, String queue) throws JMSException
 	{
-		Result result;
+		Result result = null;
 		try {
+			jmsTemplate.setReceiveTimeout(1000*60);
 			ObjectMessage objectMessage = (ObjectMessage) jmsTemplate.receive(queue);
-			result = (Result) objectMessage.getObject();
+			if(objectMessage != null)
+				result = (Result) objectMessage.getObject();
 		} catch (JMSException e) {
-			LOGGER.error("从队列" + queue + "中获取Context失败！");
-			throw new JMSException("从队列" + queue + "中获取Context失败！");
+			LOGGER.error("从队列" + queue + "中获Result失败！");
+			throw new JMSException("从队列" + queue + "中获取Result失败！");
 		}
 		return result;
 	}
