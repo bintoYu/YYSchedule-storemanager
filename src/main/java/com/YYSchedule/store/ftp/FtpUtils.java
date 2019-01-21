@@ -27,49 +27,47 @@ public class FtpUtils
 	 * @return dirPath
 	 * @throws FtpException
 	 */
-	public static String validateFtpDirectory(FTPClient ftpClient,
-			String dirPath) throws FtpException
+	public static String validateFtpDirectory(FTPClient ftpClient, String dirPath) throws FtpException
 	{
 		
 		boolean dirExists = true;
 		
 		String[] dirArray = PathUtils.formatPath4FTP(dirPath).split("/");
-		for (String dirName : dirArray) {
-			if (dirName != null && dirName.length() != 0) {
-				if (dirExists) {
-					try {
+		for (String dirName : dirArray)
+		{
+			if (dirName != null && dirName.length() != 0)
+			{
+				if (dirExists)
+				{
+					try
+					{
 						dirExists = ftpClient.changeWorkingDirectory(dirName);
-					} catch (IOException ioe) {
-						throw new FtpException(
-								"Failed to change working directory to [ "
-										+ dirName + " ] : " + ioe.getMessage(),
-								ioe);
+					} catch (IOException ioe)
+					{
+						throw new FtpException("Failed to change working directory to [ " + dirName + " ] : " + ioe.getMessage(), ioe);
 					}
 				}
-				if (!dirExists) {
-					try {
-						if (!ftpClient.makeDirectory(dirName)) {
-							throw new FtpException(
-									"Failed to create ftp dirtectory correctly: "
-											+ dirPath);
+				if (!dirExists)
+				{
+					try
+					{
+						if (!ftpClient.makeDirectory(dirName))
+						{
+							throw new FtpException("Failed to create ftp dirtectory correctly: " + dirPath);
 						}
-					} catch (IOException ioe) {
-						throw new FtpException(
-								"Failed to create ftp directory correctly [ "
-										+ dirName + " ] : " + ioe.getMessage(),
-								ioe);
+					} catch (IOException ioe)
+					{
+						throw new FtpException("Failed to create ftp directory correctly [ " + dirName + " ] : " + ioe.getMessage(), ioe);
 					}
-					try {
-						if (!ftpClient.changeWorkingDirectory(dirName)) {
-							throw new FtpException(
-									"Failed to create ftp dirtectory correctly: "
-											+ dirPath);
+					try
+					{
+						if (!ftpClient.changeWorkingDirectory(dirName))
+						{
+							throw new FtpException("Failed to create ftp dirtectory correctly: " + dirPath);
 						}
-					} catch (IOException ioe) {
-						throw new FtpException(
-								"Failed to change working directory to [ "
-										+ dirName + " ] : " + ioe.getMessage(),
-								ioe);
+					} catch (IOException ioe)
+					{
+						throw new FtpException("Failed to change working directory to [ " + dirName + " ] : " + ioe.getMessage(), ioe);
 					}
 				}
 			}
@@ -84,23 +82,25 @@ public class FtpUtils
 	 * @param dirPath
 	 * @return directory list
 	 */
-	public static List<String> listFtpDirectory(FTPClient ftpClient,
-			String dirPath) throws FtpException
+	public static List<String> listFtpDirectory(FTPClient ftpClient, String dirPath) throws FtpException
 	{
 		
 		List<String> dirList = new ArrayList<String>();
 		
-		try {
+		try
+		{
 			ftpClient.changeWorkingDirectory(dirPath);
 			String[] dirItems = ftpClient.listNames();
-			if (dirItems != null && dirItems.length > 0) {
-				for (String item : dirItems) {
+			if (dirItems != null && dirItems.length > 0)
+			{
+				for (String item : dirItems)
+				{
 					dirList.add(item);
 				}
 			}
-		} catch (IOException ioe) {
-			throw new FtpException("Failed to list directory on ftp : "
-					+ ioe.getMessage(), ioe);
+		} catch (IOException ioe)
+		{
+			throw new FtpException("Failed to list directory on ftp : " + ioe.getMessage(), ioe);
 		}
 		
 		return dirList;
@@ -108,64 +108,61 @@ public class FtpUtils
 	
 	/**
 	 * upload local file to remote directory
+	 * if file exist in ftp and we can choose to replace it,remove the old one and upload
 	 * 
 	 * @param ftpClient
 	 * @param localFilePath
 	 * @param remoteDirectory
+	 * @param isReplace
 	 * @return
 	 * @throws FtpException
 	 */
-	public static boolean upload(FTPClient ftpClient, String localFilePath,
-			String remoteDirectory) throws FtpException
+	public static boolean upload(FTPClient ftpClient, String localFilePath, String remoteDirectory,boolean isReplace) throws FtpException
 	{
-		
 		File localFile = new File(localFilePath);
 		String fileName = localFile.getName();
 		InputStream is = null;
 		boolean isSucceed = false;
 		
 		if (!localFile.exists()) {
-			throw new FtpException("Failed to find local file : "
-					+ localFilePath);
+			throw new FtpException("Failed to find local file : " + localFilePath);
 		}
 		
 		try {
 			is = new FileInputStream(localFile);
 		} catch (FileNotFoundException fnfe) {
-			throw new FtpException("Failed to find local file : "
-					+ localFilePath + " : " + fnfe.getMessage(), fnfe);
+			throw new FtpException("Failed to find local file : " + localFilePath + " : " + fnfe.getMessage(), fnfe);
 		}
 		
-		String remoteFilePath = validateFtpDirectory(ftpClient,
-				PathUtils.formatPath4FTP(remoteDirectory))
-				+ "/" + fileName;
+		String remoteFilePath = validateFtpDirectory(ftpClient, PathUtils.formatPath4FTP(remoteDirectory)) + "/" + fileName;
 		try {
-			if (!isFileExist(ftpClient, fileName)) {
+			//if file exist in ftp and we can choose to replace it,remove the old one and upload
+			if(isFileExist(ftpClient, fileName) && isReplace)
+			{
+				ftpClient.deleteFile(fileName);
+			}
+			else if(!isFileExist(ftpClient, fileName)) {
 				isSucceed = ftpClient.storeFile(fileName, is);
 				if (!isSucceed) {
-					throw new FtpException(
-							"Failed to upload file to ftp server : "
-									+ ftpClient.getReplyCode() + ":aha~:"
-									+ ftpClient.getReplyString());
+					throw new FtpException("Failed to upload file to ftp server : " + ftpClient.getReplyCode() + ":aha~:" + ftpClient.getReplyString());
 				}
 				else {
 					isSucceed = true;
 				}
 			}
 		} catch (IOException ioe) {
-			throw new FtpException("Failed to upload file to ftp server : "
-					+ remoteFilePath + " : " + ioe.getMessage(), ioe);
+			throw new FtpException("Failed to upload file to ftp server : " + remoteFilePath + " : " + ioe.getMessage(), ioe);
 		} finally {
 			try {
 				is.close();
 			} catch (IOException ioe) {
-				throw new FtpException("Failed to close input stream : "
-						+ ioe.getMessage(), ioe);
+				throw new FtpException("Failed to close input stream : " + ioe.getMessage(), ioe);
 			}
 		}
 		
 		return isSucceed;
 	}
+	
 	
 	/**
 	 * download remote file to local
@@ -176,55 +173,59 @@ public class FtpUtils
 	 * @return
 	 * @throws FtpException
 	 */
-	public static String download(FTPClient ftpClient, String remoteFilePath,
-			String localDirectory) throws FtpException
+	public static String download(FTPClient ftpClient, String remoteFilePath, String localDirectory) throws FtpException
 	{
 		
 		remoteFilePath = PathUtils.formatPath4FTP(remoteFilePath);
-		String fileName = remoteFilePath.substring(remoteFilePath
-				.lastIndexOf("/") + 1);
-		String localFilePath = PathUtils.formatPath4File(localDirectory)
-				+ File.separator + fileName;
+		String fileName = remoteFilePath.substring(remoteFilePath.lastIndexOf("/") + 1);
+		String localFilePath = PathUtils.formatPath4File(localDirectory) + File.separator + fileName;
 		File localFile = new File(localFilePath);
 		OutputStream fos = null;
 		
-		if (localFile.exists()) {
-			if (!localFile.delete()) {
-				throw new FtpException("Local file has existed : "
-						+ localFilePath + "and failed to delete it");// modify
-																		// by
-																		// WXY
-																		// 20130913
+		if (localFile.exists())
+		{
+			if (!localFile.delete())
+			{
+				throw new FtpException("Local file has existed : " + localFilePath + "and failed to delete it");// modify
+																												// by
+																												// WXY
+																												// 20130913
 			}
 			// throw new FtpException("Local file has existed : " +
 			// localFilePath);
 		}
-		if (!new File(localDirectory).exists()) {
+		if (!new File(localDirectory).exists())
+		{
 			new File(localDirectory).mkdirs();
 		}
 		
-		try {
+		try
+		{
 			fos = new BufferedOutputStream(new FileOutputStream(localFile));
-		} catch (FileNotFoundException fnfe) {
-			throw new FtpException("Failed to create local file : "
-					+ localFilePath + " : " + fnfe.getMessage(), fnfe);
+		} catch (FileNotFoundException fnfe)
+		{
+			throw new FtpException("Failed to create local file : " + localFilePath + " : " + fnfe.getMessage(), fnfe);
 		}
 		
-		try {
-			if (!ftpClient.retrieveFile(remoteFilePath, fos)) {
+		try
+		{
+			if (!ftpClient.retrieveFile(remoteFilePath, fos))
+			{
 				@SuppressWarnings("unused")
 				int i = ftpClient.getReplyCode();
 				localFilePath = null;
 			}
-		} catch (IOException ioe) {
-			throw new FtpException("Failed to download file : "
-					+ remoteFilePath, ioe);
-		} finally {
-			try {
+		} catch (IOException ioe)
+		{
+			throw new FtpException("Failed to download file : " + remoteFilePath, ioe);
+		} finally
+		{
+			try
+			{
 				fos.close();
-			} catch (IOException ioe) {
-				throw new FtpException("Failed to close output stream : "
-						+ ioe.getMessage(), ioe);
+			} catch (IOException ioe)
+			{
+				throw new FtpException("Failed to close output stream : " + ioe.getMessage(), ioe);
 			}
 		}
 		
@@ -240,28 +241,32 @@ public class FtpUtils
 	 * @throws FtpException
 	 */
 	@SuppressWarnings("unused")
-	private static boolean isExist(FTPClient ftpClient, String filePath)
-			throws FtpException
+	private static boolean isExist(FTPClient ftpClient, String filePath) throws FtpException
 	{
 		boolean isExist = false;
-		if (filePath == null || filePath.length() == 0) {
+		if (filePath == null || filePath.length() == 0)
+		{
 			return isExist;
 		}
-		else {
+		else
+		{
 			String fileDir = filePath.substring(0, filePath.lastIndexOf("/"));
-			String filename = filePath.substring(filePath.lastIndexOf("/") + 1,
-					filePath.length());
+			String filename = filePath.substring(filePath.lastIndexOf("/") + 1, filePath.length());
 			validateFtpDirectory(ftpClient, fileDir);
 			String[] fileNames;
-			try {
+			try
+			{
 				fileNames = ftpClient.listNames();
-			} catch (IOException ioe) {
-				throw new FtpException("Failed to list directory : " + fileDir,
-						ioe);
+			} catch (IOException ioe)
+			{
+				throw new FtpException("Failed to list directory : " + fileDir, ioe);
 			}
-			if (fileNames != null && fileNames.length > 0) {
-				for (int i = 0; i < fileNames.length; i++) {
-					if (filename.equals(fileNames[i])) {
+			if (fileNames != null && fileNames.length > 0)
+			{
+				for (int i = 0; i < fileNames.length; i++)
+				{
+					if (filename.equals(fileNames[i]))
+					{
 						isExist = true;
 						break;
 					}
@@ -279,20 +284,22 @@ public class FtpUtils
 	 * @return
 	 * @throws FtpException
 	 */
-	public static boolean isFileExist(FTPClient ftpClient, String filePath)
-			throws FtpException
+	public static boolean isFileExist(FTPClient ftpClient, String filePath) throws FtpException
 	{
 		FTPFile[] ftpFiles = null;
-		try {
+		try
+		{
 			ftpFiles = ftpClient.listFiles(filePath);
-		} catch (IOException ioe) {
-			throw new FtpException("Failed to list file : " + filePath + " : "
-					+ ioe.getMessage(), ioe);
+		} catch (IOException ioe)
+		{
+			throw new FtpException("Failed to list file : " + filePath + " : " + ioe.getMessage(), ioe);
 		}
-		if (ftpFiles.length == 1 && FTPFile.FILE_TYPE == ftpFiles[0].getType()) {
+		if (ftpFiles.length == 1 && FTPFile.FILE_TYPE == ftpFiles[0].getType())
+		{
 			return true;
 		}
-		else {
+		else
+		{
 			return false;
 		}
 	}
@@ -305,14 +312,14 @@ public class FtpUtils
 	 * @return
 	 * @throws FtpException
 	 */
-	public static boolean deleteFtpFile(FTPClient ftpClient, String filePath)
-			throws FtpException
+	public static boolean deleteFtpFile(FTPClient ftpClient, String filePath) throws FtpException
 	{
-		try {
+		try
+		{
 			return ftpClient.deleteFile(filePath);
-		} catch (IOException ioe) {
-			throw new FtpException("Failed to delete remote file : " + filePath
-					+ " : " + ioe.getMessage(), ioe);
+		} catch (IOException ioe)
+		{
+			throw new FtpException("Failed to delete remote file : " + filePath + " : " + ioe.getMessage(), ioe);
 		}
 	}
 	
@@ -326,22 +333,26 @@ public class FtpUtils
 	public static boolean disconnect(FTPClient ftpClient) throws FtpException
 	{
 		boolean isSucceed = false;
-		if (ftpClient != null && ftpClient.isConnected()) {
-			try {
+		if (ftpClient != null && ftpClient.isConnected())
+		{
+			try
+			{
 				ftpClient.logout();
-			} catch (IOException ioe) {
-				throw new FtpException("Failed to logout ftp : "
-						+ ioe.getMessage(), ioe);
+			} catch (IOException ioe)
+			{
+				throw new FtpException("Failed to logout ftp : " + ioe.getMessage(), ioe);
 			}
-			try {
+			try
+			{
 				ftpClient.disconnect();
 				isSucceed = true;
-			} catch (IOException ioe) {
-				throw new FtpException("Failed to close ftp connection : "
-						+ ioe.getMessage(), ioe);
+			} catch (IOException ioe)
+			{
+				throw new FtpException("Failed to close ftp connection : " + ioe.getMessage(), ioe);
 			}
 		}
-		else {
+		else
+		{
 			isSucceed = true;
 		}
 		return isSucceed;
@@ -357,16 +368,19 @@ public class FtpUtils
 	public static Long getFileLength(FTPClient ftpClient, String filePath)
 	{
 		FTPFile[] ftpFiles = null;
-		try {
+		try
+		{
 			ftpFiles = ftpClient.listFiles(filePath);
-		} catch (IOException ioe) {
-			throw new FtpException("Failed to list file : " + filePath + " : "
-					+ ioe.getMessage(), ioe);
+		} catch (IOException ioe)
+		{
+			throw new FtpException("Failed to list file : " + filePath + " : " + ioe.getMessage(), ioe);
 		}
-		if (ftpFiles.length == 1 && FTPFile.FILE_TYPE == ftpFiles[0].getType()) {
+		if (ftpFiles.length == 1 && FTPFile.FILE_TYPE == ftpFiles[0].getType())
+		{
 			return ftpFiles[0].getSize();
 		}
-		else {
+		else
+		{
 			return 0L;
 		}
 	}

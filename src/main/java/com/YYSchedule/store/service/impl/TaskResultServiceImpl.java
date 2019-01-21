@@ -62,6 +62,13 @@ public class TaskResultServiceImpl implements TaskResultService
 		int ret = 0;
 		for(TaskResult taskResult : taskResultList)
 		{
+			try
+			{
+				Thread.sleep(10);
+			} catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
 			ret += insertTaskResult(taskResult);
 		}
 		

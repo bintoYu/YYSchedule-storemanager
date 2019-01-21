@@ -1,7 +1,8 @@
+package com.YYSchedule.store.util;
 /**
  * 
  */
-package com.YYSchedule.store.util;
+
 
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -44,7 +45,7 @@ public class ActiveMQUtils
 	 * @param task
 	 * @param priority
 	 */
-	public static void sendTask(JmsTemplate jmsTemplate, String queue, final Task task, int priority)
+	public synchronized static void sendTask(JmsTemplate jmsTemplate, String queue, final Task task, int priority)
 	{
 		LOGGER.info(Thread.currentThread().getName() + " 向队列1" + queue + "发送task[" + task.getTaskId() + "]");
 		Destination destination = new ActiveMQQueue(queue);
@@ -68,7 +69,7 @@ public class ActiveMQUtils
 	 * @param queue
 	 * @param task
 	 */
-	public static void sendTask(JmsTemplate jmsTemplate, String queue, final Task task)
+	public synchronized static void sendTask(JmsTemplate jmsTemplate, String queue, final Task task)
 	{
 		LOGGER.info(Thread.currentThread().getName() + " 向队列" + queue + "发送task[" + task.getTaskId() + "]");
 		
@@ -115,7 +116,7 @@ public class ActiveMQUtils
 	 * @param queue
 	 * @param result
 	 */
-	public static void sendResult(JmsTemplate jmsTemplate, String queue, final Result result)
+	public synchronized static void sendResult(JmsTemplate jmsTemplate, String queue, final Result result)
 	{
 		LOGGER.info(Thread.currentThread().getName() + " 向队列" + queue + "发送result[" + result.getTaskId() + "]");
 		
@@ -158,7 +159,7 @@ public class ActiveMQUtils
 	 * @param queue
 	 * @param message
 	 */
-	public static void sendMessage(JmsTemplate jmsTemplate, String queue, final String message)
+	public synchronized static void sendMessage(JmsTemplate jmsTemplate, String queue, final String message)
 	{
 		LOGGER.info(Thread.currentThread().getName() + " 向队列" + queue + "发送消息--------");
 		
