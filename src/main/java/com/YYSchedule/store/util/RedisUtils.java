@@ -26,11 +26,11 @@ public class RedisUtils
 	 * @param value
 	 * @return true成功 false失败
 	 */
-	public static boolean set(RedisTemplate redisTemplate,String key, Object value)
+	public static boolean set(RedisTemplate<String,String> redisTemplate,String key, String value)
 	{
 		try
 		{
-			redisTemplate.opsForList().rightPush(key, value);
+			redisTemplate.opsForList().leftPush(key, value);
 			return true;
 		} catch (Exception e)
 		{
@@ -46,16 +46,22 @@ public class RedisUtils
 	 * @param value
 	 * @return true成功 false失败
 	 */
-	public static String get(RedisTemplate redisTemplate,String key)
+	public static String get(RedisTemplate<String,String> redisTemplate,String key)
 	{
 		String leftPop = null;
 		try
 		{
-			leftPop = (String)redisTemplate.opsForList().leftPop(key);
+			leftPop = redisTemplate.opsForList().rightPop(key);
 		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}
 		return leftPop;
+	}
+	
+	
+	public static int size(RedisTemplate<String,String> redisTemplate,String key)
+	{
+		return redisTemplate.opsForList().size(key).intValue();
 	}
 }

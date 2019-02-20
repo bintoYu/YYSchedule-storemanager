@@ -45,9 +45,8 @@ public class ActiveMQUtils
 	 * @param task
 	 * @param priority
 	 */
-	public synchronized static void sendTask(JmsTemplate jmsTemplate, String queue, final Task task, int priority)
+	public static void sendTask(JmsTemplate jmsTemplate, String queue, final Task task, int priority)
 	{
-		LOGGER.info(Thread.currentThread().getName() + " 向队列1" + queue + "发送task[" + task.getTaskId() + "]");
 		Destination destination = new ActiveMQQueue(queue);
 		// 设置队列优先级
 		jmsTemplate.setExplicitQosEnabled(true);
@@ -69,10 +68,8 @@ public class ActiveMQUtils
 	 * @param queue
 	 * @param task
 	 */
-	public synchronized static void sendTask(JmsTemplate jmsTemplate, String queue, final Task task)
+	public static void sendTask(JmsTemplate jmsTemplate, String queue, final Task task)
 	{
-		LOGGER.info(Thread.currentThread().getName() + " 向队列" + queue + "发送task[" + task.getTaskId() + "]");
-		
 		jmsTemplate.send(queue, new MessageCreator()
 		{
 			public Message createMessage(Session session) throws JMSException
@@ -116,7 +113,7 @@ public class ActiveMQUtils
 	 * @param queue
 	 * @param result
 	 */
-	public synchronized static void sendResult(JmsTemplate jmsTemplate, String queue, final Result result)
+	public static void sendResult(JmsTemplate jmsTemplate, String queue, final Result result)
 	{
 		LOGGER.info(Thread.currentThread().getName() + " 向队列" + queue + "发送result[" + result.getTaskId() + "]");
 		
@@ -159,7 +156,7 @@ public class ActiveMQUtils
 	 * @param queue
 	 * @param message
 	 */
-	public synchronized static void sendMessage(JmsTemplate jmsTemplate, String queue, final String message)
+	public static void sendMessage(JmsTemplate jmsTemplate, String queue, final String message)
 	{
 		LOGGER.info(Thread.currentThread().getName() + " 向队列" + queue + "发送消息--------");
 		

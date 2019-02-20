@@ -4,7 +4,6 @@ import javax.jms.MessageProducer;
 import javax.jms.Session;
 
 import com.YYSchedule.common.pojo.Task;
-import com.YYSchedule.store.util.ActiveMQUtils_nospring;
 import com.YYSchedule.store.util.QueueConnectionFactory;
 
 /**
@@ -24,22 +23,22 @@ public class TestActivemq
 		Connection connection = QueueConnectionFactory.createActiveMQConnection("failover:(tcp://192.168.1.184:61616)");
 		Session session = QueueConnectionFactory.createSession(connection);
 		MessageProducer producer = QueueConnectionFactory.createProducer(session, queue);
-		try
-		{
-			ActiveMQUtils_nospring.sendTask(task, session, producer, queue, 6);
-		} catch (JMSException e)
-		{
-			e.printStackTrace();
-		}finally
-		{
-			try
-			{
-				connection.close();
-			} catch (JMSException e)
-			{
-				e.printStackTrace();
-			}
-		}
+//		try
+//		{
+//			ActiveMQUtils_nospring.sendTask(task, session, producer, queue, 6);
+//		} catch (JMSException e)
+//		{
+//			e.printStackTrace();
+//		}finally
+//		{
+//			try
+//			{
+//				connection.close();
+//			} catch (JMSException e)
+//			{
+//				e.printStackTrace();
+//			}
+//		}
 	}
 	
 	public void testReceived()
